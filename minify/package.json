@@ -1,0 +1,17 @@
+{
+  "name": "minify-jjl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "minify.js",
+  "scripts": {
+    "minify:all": "node minify_all.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "minify": "^6.0.1",
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.13.16"
+  }
+}

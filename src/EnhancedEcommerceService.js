@@ -1,4 +1,4 @@
-//version = "V 1.1.0" Add UNRELEASED if the current version is not yet published to the CDN. When releasing remove UNRELEASED.
+//version = "V 1.2.0 UNRELEASED" Add UNRELEASED if the current version is not yet published to the CDN. When releasing remove UNRELEASED.
 
 class IndexDataSelector extends DataSelector {
     /**
@@ -75,6 +75,7 @@ class BoundEventListener {
 class EnhancedEcommerceService {
     constructor() {
         this.boundClickEventListeners = [];
+        this.dataLayerName = "dataLayer";
     }
 
     /**
@@ -199,10 +200,10 @@ class EnhancedEcommerceService {
      */
     privatePushToDataLayer(eventData) {
         // Create the data layer if it does not yet exists.
-        window.dataLayer = window.dataLayer || [];
+        window[this.dataLayerName] = window[this.dataLayerName] || [];
 
-        dataLayer.push(eventData);
-        console.log("Enhanced Ecommerce:", dataLayer[dataLayer.length - 1]);
+        window[this.dataLayerName].push(eventData);
+        console.log("Enhanced Ecommerce:", window[this.dataLayerName][window[this.dataLayerName].length - 1]);
     }
 
     /**

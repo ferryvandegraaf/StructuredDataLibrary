@@ -11,7 +11,7 @@ https://cdn.jsdelivr.net/gh/happy-geeks/StructuredDataLibrary@main/versions/Stru
 
 ## EnhancedEcommerceService
 Classes for enhanced ecommerce events.  
-https://cdn.jsdelivr.net/gh/happy-geeks/StructuredDataLibrary@main/versions/StructuredDataLibrary-EnhancedEcommerceService-1.1.0.min.js
+https://cdn.jsdelivr.net/gh/happy-geeks/StructuredDataLibrary@main/versions/StructuredDataLibrary-EnhancedEcommerceService-1.2.0.min.js
 
 ## EnhancedEcommerceConfiguratorService
 Extension of the EnhancedEcommerceService with extra functionality for configurators.  

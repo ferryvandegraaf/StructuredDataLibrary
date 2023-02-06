@@ -131,19 +131,18 @@ class EnhancedEcommerceService {
     bindClickEcommerceEvent(eventName, dataSchema, initiatorSelector = "", defaultEcommerceSchema = true, stopPropagation = false) {
         const initiators = document.querySelectorAll(dataSchema.itemContainerSelector);
         initiators.forEach(initiator => {
-            const elementToBind = initiatorSelector === "" ? initiator : initiator.querySelector(initiatorSelector);
-            if(elementToBind == null) {
-                return;
-            }
-
-            const eventListener = (event) => {
-                if(stopPropagation) {
-                    event.stopPropagation();
+            let elementsToBind = [];
+            initiatorSelector === "" ?  elementsToBind.push(initiator) : elementsToBind = initiator.querySelectorAll(initiatorSelector);
+            elementsToBind.forEach(elementToBind => {
+                const eventListener = (event) => {
+                    if(stopPropagation) {
+                        event.stopPropagation();
+                    }
+                    this.privatePushEcommerceEvent(eventName, dataSchema, elementToBind, defaultEcommerceSchema);
                 }
-                this.privatePushEcommerceEvent(eventName, dataSchema, elementToBind, defaultEcommerceSchema);
-            }
-            elementToBind.addEventListener("click", eventListener);
-            this.boundClickEventListeners.push(new BoundEventListener(elementToBind, eventListener, "click"));
+                elementToBind.addEventListener("click", eventListener);
+                this.boundClickEventListeners.push(new BoundEventListener(elementToBind, eventListener, "click"));
+            });
         });
     }
 
@@ -178,19 +177,18 @@ class EnhancedEcommerceService {
     bindClickCustomEvent(eventName, dataSchema, initiatorSelector = "", stopPropagation = false) {
         const initiators = document.querySelectorAll(dataSchema.itemContainerSelector);
         initiators.forEach(initiator => {
-            const elementToBind = initiatorSelector === "" ? initiator : initiator.querySelector(initiatorSelector);
-            if(elementToBind == null) {
-                return;
-            }
-
-            const eventListener = (event) => {
-                if(stopPropagation) {
-                    event.stopPropagation();
+            let elementsToBind = [];
+            initiatorSelector === "" ?  elementsToBind.push(initiator) : elementsToBind = initiator.querySelectorAll(initiatorSelector);
+            elementsToBind.forEach(elementToBind => {
+                const eventListener = (event) => {
+                    if(stopPropagation) {
+                        event.stopPropagation();
+                    }
+                    this._pushCustomEvent(eventName, dataSchema, elementToBind);
                 }
-                this._pushCustomEvent(eventName, dataSchema, elementToBind);
-            }
-            elementToBind.addEventListener("click", eventListener);
-            this.boundClickEventListeners.push(new BoundEventListener(elementToBind, eventListener, "click"));
+                elementToBind.addEventListener("click", eventListener);
+                this.boundClickEventListeners.push(new BoundEventListener(elementToBind, eventListener, "click"));
+            });
         });
     }
 

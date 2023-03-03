@@ -1,4 +1,4 @@
-//version = "V 1.3.0 UNRELEASED" Add UNRELEASED if the current version is not yet published to the CDN. When releasing remove UNRELEASED.
+//version = "V 1.2.0" Add UNRELEASED if the current version is not yet published to the CDN. When releasing remove UNRELEASED.
 
 class ConfiguratorChoiceSelector {
     /**
@@ -79,18 +79,6 @@ class EnhancedEcommerceConfiguratorService extends EnhancedEcommerceService {
         this.choiceEventSettings = choiceEventSettings;
         this.errorEventSettings = errorEventSettings;
 
-        this.eventNames = {
-            errorMessage: "ErrorMessage",
-            nextStep: "Volgende stap",
-            previousStep: "Vorige stap",
-            summary: "Samenvatting",
-            addedToBasket: "Stap {currentStep} afgerond - {configuratorType}",
-            virtualPageview: "VirtualPageview",
-            stepComplete: "Stap {currentStep} afgerond - {configuratorType}",
-            informationIcon: "Informatie icoon",
-            choicesMade: "Keuzes stap {currentStep} - {configuratorType}"
-        };
-
         this.privateInit();
     }
 
@@ -126,7 +114,7 @@ class EnhancedEcommerceConfiguratorService extends EnhancedEcommerceService {
                         const errorEventSchemas = this.errorEventSettings.getErrorSchemas(this.currentStep, this.configuratorType);
                         // Delay a fraction to let the default functionality run first to make sure all errors are on the page.
                         errorEventSchemas.forEach(schema => {
-                            this.privatePushConfiguratorEvent(this.eventNames.errorMessage, schema);
+                            this.privatePushConfiguratorEvent("ErrorMessage", schema);
                         });
                     }, 100);
                 });
@@ -152,9 +140,9 @@ class EnhancedEcommerceConfiguratorService extends EnhancedEcommerceService {
      */
     privateNextPreviousStep(currentStep) {
         if(currentStep < this.currentStep) {
-            this.privatePushConfiguratorEvent(this.eventNames.previousStep, this.getPathChanged(this.currentStep, currentStep));
+            this.privatePushConfiguratorEvent("Vorige stap", this.getPathChanged(this.currentStep, currentStep));
         } else if(currentStep > this.currentStep) {
-            this.privatePushConfiguratorEvent(this.eventNames.nextStep, this.getPathChanged(this.currentStep, currentStep));
+            this.privatePushConfiguratorEvent("Volgende stap", this.getPathChanged(this.currentStep, currentStep));
         }
     }
 
@@ -184,7 +172,7 @@ class EnhancedEcommerceConfiguratorService extends EnhancedEcommerceService {
         this.privatePushVirtualPageview(this.currentStep + 1);
         this.privateNextPreviousStep(this.currentStep + 1);
         this.privatePushStepComplete(this.currentStep + 1);
-        this.privatePushConfiguratorEvent(this.eventNames.summary, this.getSummarySchema());
+        this.privatePushConfiguratorEvent("Samenvatting", this.getSummarySchema());
     }
 
     /**
@@ -192,7 +180,7 @@ class EnhancedEcommerceConfiguratorService extends EnhancedEcommerceService {
      * It will push the add to basket event.
      */
     privateAddedToBasket() {
-        const eventName = this.eventNames.addedToBasket.replace("{currentStep}", this.currentStep).replace("{configuratorType}", this.configuratorType);
+        const eventName = `Stap ${this.currentStep} afgerond - ${this.configuratorType}`;
         this.privatePushConfiguratorEvent(eventName, this.getAddToBasketSchema(this.currentStep));
     }
 
@@ -201,7 +189,7 @@ class EnhancedEcommerceConfiguratorService extends EnhancedEcommerceService {
      * @param {number} currentStep The step that is being viewed.
      */
     privatePushVirtualPageview(currentStep) {
-        this.privatePushConfiguratorEvent(this.eventNames.virtualPageview, this.getVirtualPageviewSchema(currentStep));
+        this.privatePushConfiguratorEvent("VirtualPageview", this.getVirtualPageviewSchema(currentStep));
     }
 
     /**
@@ -228,7 +216,7 @@ class EnhancedEcommerceConfiguratorService extends EnhancedEcommerceService {
      */
     privatePushStepComplete(currentStep) {
         if(this.currentStep < currentStep) {
-            const eventName = this.eventNames.stepComplete.replace("{currentStep}", this.currentStep).replace("{configuratorType}", this.configuratorType);
+            const eventName = `Stap ${this.currentStep} afgerond - ${this.configuratorType}`;
             this.privatePushConfiguratorEvent(eventName, this.getStepCompleteSchema(this.currentStep));
         }
 
@@ -267,7 +255,7 @@ class EnhancedEcommerceConfiguratorService extends EnhancedEcommerceService {
             this.choiceEventSettings.configuratorInstructionSelectors.forEach(instructionSelector => {
                 document.querySelectorAll(instructionSelector.selector).forEach(element => {
                     const event = () => {
-                        this.privatePushConfiguratorEvent(this.eventNames.informationIcon, this.choiceEventSettings.getInstructionSchema(this.currentStep, this.configuratorType, element));
+                        this.privatePushConfiguratorEvent("Informatie icoon", this.choiceEventSettings.getInstructionSchema(this.currentStep, this.configuratorType, element));
                     };
                     element.addEventListener(instructionSelector.eventType, event);
                     this.boundEventListeners.push(new BoundEventListener(element, event, instructionSelector.eventType));
@@ -281,7 +269,7 @@ class EnhancedEcommerceConfiguratorService extends EnhancedEcommerceService {
      * @param {Event} event The event that called this function. Can be null when delayed.
      */
     privatePushChoiceMade(event) {
-        const eventName = this.eventNames.choicesMade.replace("{currentStep}", this.currentStep).replace("{configuratorType}", this.configuratorType);
+        const eventName = `Keuzes stap ${this.currentStep} - ${this.configuratorType}`;
         this.privatePushConfiguratorEvent(eventName, this.choiceEventSettings.getChoiceMadeSchema(this.currentStep, event == null ? null : event.currentTarget));
     }
 

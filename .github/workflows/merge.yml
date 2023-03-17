@@ -2,7 +2,7 @@ name: Merge upstream branches
 on:
   schedule:
     # iedere 15 minuten
-    - cron:  '*/15  * * * *'
+    - cron:  '5 8 * * 0'
 jobs:
   merge:
     runs-on: ubuntu-latest

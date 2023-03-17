@@ -1,7 +1,7 @@
 name: Merge upstream branches
 on:
   schedule:
-    # iedere 15 minuten
+    # iedere zondag om 5 over 8
     - cron:  '5 8 * * 0'
 jobs:
   merge:
